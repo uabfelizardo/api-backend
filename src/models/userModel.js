@@ -5,6 +5,9 @@ const user =  db.define("user", {
   name:{
     type:DataTypes.STRING(255)
 },
+title:{
+    type:DataTypes.STRING(255)
+},
 gender:{
     type:DataTypes.CHAR(1)
 },
@@ -20,11 +23,9 @@ password:{
 numeroutent:{
   type:DataTypes.INTEGER
 },
-user_type_id:{
-  type:DataTypes.INTEGER,
-  references:{ model:'usertypes',key:'id'},
-  allowNull:false
-}
+img:{
+    type: DataTypes.BLOB('long')
+},
 });
  
 export default user;

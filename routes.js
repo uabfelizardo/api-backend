@@ -1,6 +1,7 @@
 import express from "express";
-import usertype from "./src/controllers/usertypeController.js";
+import role from "./src/controllers/roleController.js";
 import user from "./src/controllers/userController.js";
+import userrole from "./src/controllers/userroleController.js";
 import appointment from "./src/controllers/appointmentController.js";
 import appointmentdrug from "./src/controllers/appointmentdrugController.js";
 import appointmentnote from "./src/controllers/appointmentnoteController.js";
@@ -10,6 +11,8 @@ import diagnosis from "./src/controllers/diagnosisController.js";
 import document from "./src/controllers/documentController.js";
 import drug from "./src/controllers/drugController.js";
 import notification from "./src/controllers/notificationController.js";
+import speciality from "./src/controllers/specialityController.js";
+import { upload }  from "./src/config/multerConfig.js";
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -19,19 +22,41 @@ const __dirname = dirname(__filename);
 
 const routes = express.Router();
 
-// Routes for usertyp model
-routes.get("/usertype", usertype.findAll);
-routes.post("/usertype", usertype.addUserType);
-routes.get("/usertype/:id", usertype.findUserType);
-routes.put("/usertype/:id", usertype.updateUserType);
-routes.delete("/usertype/:id", usertype.deleteUserType);
+
+// Routes for role model
+routes.get("/role", role.findAll);
+routes.post("/role", role.addRole);
+routes.get("/role/:id", role.findRole);
+routes.put("/role/:id", role.updateRole);
+routes.delete("/role/:id", role.deleteRole);
 
 // Routes for user model
+
+// Rota para adicionar um novo usuário com upload de imagem
+routes.post('/user', upload.single('img'), user.addUser);
+// Rota para atualizar um usuário com upload de imagem
+routes.put('/user/:id', upload.single('img'), user.updateUser);
+
 routes.get("/user", user.findAll);
 routes.post("/user", user.addUser);
 routes.get("/user/:id", user.findUser);
 routes.put("/user/:id", user.updateUser);
 routes.delete("/user/:id", user.deleteUser);
+routes.post("/login", user.loginUser);
+
+// Routes for userrole model
+routes.get("/userrole", userrole.findAll);
+routes.post("/userrole", userrole.addUserRole);
+routes.get("/userrole/:id", userrole.findUserRole);
+routes.put("/userrole/:id", userrole.updateUserRole);
+routes.delete("/userrole/:id", userrole.deleteUserRole);
+
+// Routes for speciality model
+routes.get("/speciality", speciality.findAll);
+routes.post("/speciality", speciality.addSpeciality);
+routes.get("/speciality/:id", speciality.findSpeciality);
+routes.put("/speciality/:id", speciality.updateSpeciality);
+routes.delete("/speciality/:id", speciality.deleteSpeciality);
 
 // Routes for Appointment model
 routes.get("/appointment", appointment.findAll);

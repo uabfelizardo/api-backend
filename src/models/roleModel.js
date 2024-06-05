@@ -2,10 +2,10 @@ import { Sequelize, DataTypes } from 'sequelize';
 import db from "../db.js";
 
 
-const usertype = db.define("usertype", {
+const role = db.define("role", {
   description:{
     type:DataTypes.STRING(255)
 }
 });
 
-export default usertype;
+export default role;
