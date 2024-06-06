@@ -1,16 +1,23 @@
 import { Sequelize } from "sequelize"; // importar o sequelize
-import dotenv from "dotenv/config.js"; // importar o dotenv para localizar as variáveis de ambiente
+import dotenv from "dotenv"; // importar o dotenv para localizar as variáveis de ambiente
 
-// passar os dados do .env para as constantes
-const dbName = process.env.DB_NAME; 
-const dbUser = process.env.DB_USER;
-const dbHost = process.env.DB_HOST;
-const dbPassword = process.env.DB_PASSWORD;
+dotenv.config(); // Corrigido: Carregar as variáveis de ambiente do arquivo .env
 
-const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
-  //passar os dados para o sequelize
-  dialect: "mysql", //informar o tipo de banco que vamos utilizar
-  host: dbHost, //o host, neste caso estamos com um banco local
+// passar a URL completa do .env para a constante
+const dbURL = process.env.DB_URL_External;
+
+if (!dbURL) {
+  throw new Error('DB_URL is not defined in the environment variables');
+}
+
+const sequelize = new Sequelize(dbURL, {
+  dialect: "postgres",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false // Dependendo da configuração do seu servidor PostgreSQL
+    }
+  }
 });
 
 sequelize.authenticate().then(() => {
@@ -18,7 +25,5 @@ sequelize.authenticate().then(() => {
 }).catch((error) => {
   console.error('Unable to establish connection with the database:', error);
 });
-
-// Fazer o relacionamentos
 
 export default sequelize; //exportar
