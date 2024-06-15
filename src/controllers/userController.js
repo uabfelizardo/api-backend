@@ -1,91 +1,91 @@
-import UserRepository from '../models/userModel.js';
-import path from 'path';
+import User from '../models/userModel.js';
+import DoctorInformation from '../models/doctorinformationModel.js';
 
-function findAll(req, res) {
-  UserRepository.findAll().then((result) => res.json(result));
+async function findAll(req, res) {
+  try {
+    const users = await User.findAll();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 
-function findUser(req, res) {
-  UserRepository.findByPk(req.params.id).then((result) => res.json(result));
+async function findUser(req, res) {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
 
 async function addUser(req, res) {
   try {
-    const img = req.file ? req.file.filename : null;
-    const newUser = await UserRepository.create({
-      name: req.body.name,
-      title: req.body.title,
-      gender: req.body.gender,
-      birthdate: req.body.birthdate,
-      email: req.body.email,
-      password: req.body.password,
-      numeroutent: req.body.numeroutent,
-      img: img // Adicionado campo de imagem
-    });
-    res.status(201).json(newUser);
+    const newUser = await User.create(req.body);
+    res.json(newUser);
   } catch (error) {
-    console.error('Error adding user:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ error: error.message });
   }
 }
 
 async function updateUser(req, res) {
   try {
-    const img = req.file ? req.file.filename : null;
-    await UserRepository.update(
-      {
-        name: req.body.name,
-        title: req.body.title,
-        gender: req.body.gender,
-        birthdate: req.body.birthdate,
-        email: req.body.email,
-        password: req.body.password,
-        numeroutent: req.body.numeroutent,
-        img: img // Atualizado campo de imagem
-      },
-      {
-        where: {
-          id: req.params.id,
-        },
-      }
-    );
-
-    const updatedUser = await UserRepository.findByPk(req.params.id);
+    await User.update(req.body, {
+      where: { id: req.params.id }
+    });
+    const updatedUser = await User.findByPk(req.params.id);
     res.json(updatedUser);
   } catch (error) {
-    console.error('Error updating user:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ error: error.message });
   }
 }
 
 async function deleteUser(req, res) {
   try {
-    await UserRepository.destroy({
-      where: {
-        id: req.params.id,
-      },
+    await User.destroy({
+      where: { id: req.params.id }
     });
-
-    const users = await UserRepository.findAll();
-    res.json(users);
+    res.status(204).send();
   } catch (error) {
-    console.error('Error deleting user:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ error: error.message });
   }
 }
 
 async function loginUser(req, res) {
-  const { email, password } = req.body;
   try {
-    const user = await UserRepository.findOne({ where: { email } });
-    if (!user || user.password !== password) {
-      return res.status(401).json({ message: 'Email or password is incorrect' });
+    const user = await User.findOne({
+      where: { email: req.body.email, password: req.body.password }
+    });
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(401).json({ error: 'Invalid email or password' });
     }
-    res.status(200).json(user);
   } catch (error) {
-    console.error('Error during login:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ error: error.message });
   }
 }
 
-export default { findAll, addUser, findUser, updateUser, deleteUser, loginUser };
+
+async function findUserDoctorInformation(req, res) {
+  try {
+    const user = await User.findByPk(req.params.id, {
+      include: {
+        model: DoctorInformation,
+        as: 'doctorInformation'
+      }
+    });
+    if (user && user.doctorInformation) {
+      res.json(user.doctorInformation);
+    } else {
+      res.status(404).json({ error: 'DoctorInformation not found for the user' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+export default { findAll, findUser, addUser, updateUser, deleteUser, loginUser, findUserDoctorInformation };

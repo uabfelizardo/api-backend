@@ -1,6 +1,7 @@
 import express from "express";
 import role from "./src/controllers/roleController.js";
 import user from "./src/controllers/userController.js";
+import doctorInformation from "./src/controllers/doctorinformationController.js";
 import userrole from "./src/controllers/userroleController.js";
 import appointment from "./src/controllers/appointmentController.js";
 import appointmentdrug from "./src/controllers/appointmentdrugController.js";
@@ -43,6 +44,7 @@ routes.get("/user/:id", user.findUser);
 routes.put("/user/:id", user.updateUser);
 routes.delete("/user/:id", user.deleteUser);
 routes.post("/login", user.loginUser);
+routes.get('/user/:id/doctorinformation', user.findUserDoctorInformation); 
 
 // Routes for userrole model
 routes.get("/userrole", userrole.findAll);
@@ -50,6 +52,14 @@ routes.post("/userrole", userrole.addUserRole);
 routes.get("/userrole/:id", userrole.findUserRole);
 routes.put("/userrole/:id", userrole.updateUserRole);
 routes.delete("/userrole/:id", userrole.deleteUserRole);
+
+//
+routes.get("/doctorinformation", doctorInformation.findAll);
+routes.post("/doctorinformation", doctorInformation.addDoctorInformation);
+routes.get("/doctorinformation/:id", doctorInformation.findDoctorInformation);
+routes.put("/doctorinformation/:id", doctorInformation.updateDoctorInformation);
+routes.delete("/doctorinformation/:id", doctorInformation.deleteDoctorInformation);
+
 
 // Routes for speciality model
 routes.get("/speciality", speciality.findAll);
