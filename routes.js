@@ -2,6 +2,7 @@ import express from "express";
 import role from "./src/controllers/roleController.js";
 import user from "./src/controllers/userController.js";
 import doctorInformation from "./src/controllers/doctorinformationController.js";
+import doctorSpecialties from "./src/controllers/doctorSpecialtiesController.js";
 import userrole from "./src/controllers/userroleController.js";
 import appointment from "./src/controllers/appointmentController.js";
 import appointmentdrug from "./src/controllers/appointmentdrugController.js";
@@ -20,6 +21,18 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+
+import DoctorInformation from './src/models/doctorinformationModel.js';
+import DoctorSpecialties from './src/models/doctorSpecialtiesModel.js';
+import Speciality from './src/models/specialityModel.js';
+import User from "./src/models/userModel.js";
+
+// Associação de tabelas (para joins)
+DoctorInformation.associate({ DoctorSpecialties, User });
+DoctorSpecialties.associate({ DoctorInformation, Speciality });
+Speciality.associate({ DoctorSpecialties });
+User.associate({ DoctorInformation });
 
 const routes = express.Router();
 
@@ -53,13 +66,25 @@ routes.get("/userrole/:id", userrole.findUserRole);
 routes.put("/userrole/:id", userrole.updateUserRole);
 routes.delete("/userrole/:id", userrole.deleteUserRole);
 
-//
+// Routes for DoctorInformation model
 routes.get("/doctorinformation", doctorInformation.findAll);
 routes.post("/doctorinformation", doctorInformation.addDoctorInformation);
 routes.get("/doctorinformation/:id", doctorInformation.findDoctorInformation);
 routes.put("/doctorinformation/:id", doctorInformation.updateDoctorInformation);
 routes.delete("/doctorinformation/:id", doctorInformation.deleteDoctorInformation);
 
+// Routes for doctorSpecialty model
+routes.get("/doctorSpecialties", doctorSpecialties.findAll);
+routes.get("/doctorSpecialties/DoctorSpecialty/:user_id", doctorSpecialties.findDoctorSpecialty);
+routes.get("/doctorSpecialties/SpecialtyDoctors/:specialty_id", doctorSpecialties.findSpecialtyDoctors);
+routes.post("/doctorSpecialties/add", doctorSpecialties.addDoctorSpecialties);
+routes.delete("/doctorSpecialties/:user_id/:specialty_id", doctorSpecialties.deleteDoctorSpecialties);
+
+// Routes to get doctor information and specialty data
+routes.get("/doctors/all", doctorInformation.getFullDoctorInfo);
+routes.get("/doctors/ByDoctorId/:user_id", doctorInformation.getFullDoctorInfoByDoctorId);
+// routes.get("/doctors/BySpecialtyId/:specialty_id");
+// routes.get("/doctors/BySpecialtyDescription/:description");
 
 // Routes for speciality model
 routes.get("/speciality", speciality.findAll);
