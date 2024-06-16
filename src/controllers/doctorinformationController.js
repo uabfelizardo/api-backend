@@ -51,9 +51,12 @@ async function getFullDoctorInfo(req, res) {
 // Obter informação do médico (dados do médico, especialidade e avaliação) através do seu ID
 async function getFullDoctorInfoByDoctorId(req, res) {
   try {
-    const doctorInformation = await User.findAll({
+    const doctorInformation = await DoctorInformationRepository.findAll({
       Where: { user_id: req.params.user_id },
-      include: DoctorInformation, DoctorSpecialties
+      include: [
+        { model: DoctorSpecialties, as: 'specialties', include: [{ model: Speciality, as: 'specialty' }] },
+        { model: User, as: 'doctorInformation' }
+      ]
     })
     if (doctorInformation) {
       res.json(doctorInformation);
