@@ -94,8 +94,8 @@ routes.get("/doctors/ByDoctorId/:user_id", doctorInformation.getFullDoctorInfoBy
 routes.get("/reviews/all", doctorReviews.findAll);
 routes.get("/reviews/ByUser/:user_id", doctorReviews.findByUser);
 routes.get("/reviews/ByDoctor/:doctorInformation_id", doctorReviews.findByDoctor);
-routes.post("/doctorSpecialties/add", doctorReviews.addDoctorReviews);
-routes.delete("/doctorSpecialties/:id", doctorReviews.deleteDoctorReviews);
+routes.post("/reviews/add", doctorReviews.addDoctorReviews);
+routes.delete("/reviews/:id", doctorReviews.deleteDoctorReviews);
 
 // Routes for speciality model
 routes.get("/speciality", speciality.findAll);

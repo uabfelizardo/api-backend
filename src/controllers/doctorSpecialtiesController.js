@@ -41,13 +41,17 @@ async function findSpecialtyDoctors(req, res) {
 // Adicionar nova especialidade para o médico
 async function addDoctorSpecialties(req, res) {
   try {
-    const newdoctorSpecialties = await DoctorSpecialtiesRepository.create({
-      specialty_Id: req.body.specialty_id,
-      user_id: req.body.user_id,
-    });
-    res.status(201).json(newdoctorSpecialties);
+    const { specialty_id, user_id } = req.body;
+
+    if (!specialty_id || !user_id) {
+      return res.status(400).json({ error: 'specialty_id e user_id devem ser fornecidos' });
+    }
+
+    const newDoctorSpecialties = await DoctorSpecialtiesRepository.create({ specialty_id, user_id });
+    res.status(201).json(newDoctorSpecialties);
   } catch (error) {
-    res.status(500).json({ error: 'Erro ao adicionar a especialidade para o médico' });
+    console.error('Erro ao associar a especialidade ao médico:', error);
+    res.status(500).json({ error: 'Erro ao associar a especialidade ao médico' });
   }
 }
 
