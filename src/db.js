@@ -4,7 +4,7 @@ import dotenv from "dotenv"; // importar o dotenv para localizar as variáveis d
 dotenv.config(); // Corrigido: Carregar as variáveis de ambiente do arquivo .env
 
 // passar a URL completa do .env para a constante
-const dbURL = process.env.DB_URL_Internal;
+const dbURL = process.env.DB_URL_External;
 
 if (!dbURL) {
   throw new Error('DB_URL is not defined in the environment variables');

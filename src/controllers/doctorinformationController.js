@@ -105,6 +105,29 @@ async function updateDoctorInformation(req, res) {
   }
 }
 
+// Atualizar rating do médico
+async function updateDoctorInformationRating(req, res) {
+  try {
+    const [updated] = await DoctorInformationRepository.update(
+      {
+        rating: req.params.rating
+      },
+      {
+        where: { id: req.params.id },
+      }
+    );
+
+    if (updated) {
+      const updatedDoctorInformation = await DoctorInformationRepository.findByPk(req.params.id);
+      res.json(updatedDoctorInformation);
+    } else {
+      res.status(404).json({ error: 'Informação do médico não encontrada' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao atualizar informação do médico' });
+  }
+}
+
 // Deletar uma informação de médico existente por ID
 async function deleteDoctorInformation(req, res) {
   try {
