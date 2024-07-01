@@ -1,3 +1,39 @@
+// import { Sequelize } from "sequelize";
+// import dotenv from "dotenv/config.js";
+
+// const dbName = process.env.DB_NAME;
+// const dbUser = process.env.DB_USER;
+// const dbHost = process.env.DB_HOST;
+// const dbPassword = process.env.DB_PASSWORD;
+
+// const sequelize = new Sequelize(dbName, dbUser, dbPassword, {
+//   dialect: "mysql",
+//   host: dbHost,
+//   logging: false, // Desativar logs do Sequelize, se desejar
+//   define: {
+//     timestamps: true, // Adicionar timestamps automaticamente às tabelas
+//   },
+//   // Opção para atualizar automaticamente o esquema do banco de dados
+//   alter: {
+//     drop: false, // Não descartar tabelas existentes se houver mudanças
+//   },
+//   // Forçar a criação do banco de dados se não existir
+//   // database: 'onlinedoctordb',
+//   // force: true,
+// });
+
+// sequelize.authenticate()
+//   .then(() => {
+//     console.log('Connection established successfully.');
+//   })
+//   .catch((error) => {
+//     console.error('Unable to establish connection with the database:', error);
+//   });
+
+// // Adicione aqui os modelos e as associações entre eles, se necessário
+
+// export default sequelize;
+
 import { Sequelize } from "sequelize"; // importar o sequelize
 import dotenv from "dotenv/config.js"; // importar o dotenv para localizar as variáveis de ambiente
 

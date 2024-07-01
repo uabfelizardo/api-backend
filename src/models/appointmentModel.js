@@ -1,23 +1,34 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import db from "../db.js";
 
-
 const appointment = db.define("appointment", {
-  startDate:{
-    type:DataTypes.DATE
+  date: {
+    type: DataTypes.DATE
   },
-  endDate:{
-    type:DataTypes.DATE
+  time: {
+    type: DataTypes.TIME
   },
-  observation:{
-    type:DataTypes.STRING(255)
+  observation: {
+    type: DataTypes.STRING(255)
   },
-  user_id:{
-    type:DataTypes.INTEGER,
-    references:{ model:'users',key:'id'},
-    onDelete:'CASCADE',
-    onUpdate:'CASCADE',
-    allowNull:false
+  patient_id: {
+    type: DataTypes.INTEGER,
+    references: { model: 'users', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    allowNull: false
+  },
+  doctor_id: {
+    type: DataTypes.INTEGER,
+    references: { model: 'users', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+    allowNull: false
+  },
+  state: {
+    type: DataTypes.STRING(255),
+    defaultValue: 'pending',
+    allowNull: false
   }
 });
 

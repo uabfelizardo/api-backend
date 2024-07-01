@@ -4,9 +4,23 @@ function findAll(req, res) {
   SpecialityRepository.findAll().then((result) => res.json(result));
 }
 
-function findSpeciality(req, res) {
+function findBySpecialityId(req, res) {
   SpecialityRepository.findByPk(req.params.id).then((result) => res.json(result));
 }
+
+function findBySpecialityDescription(req, res) {
+  SpecialityRepository.findAll({
+    where: {
+      description: req.params.description
+    }
+  })
+  .then((result) => res.json(result))
+  .catch((error) => {
+    console.error(error);
+    res.status(500).send('An error occurred while fetching the specialties.');
+  });
+}
+
 
 async function addSpeciality(req, res) {
       await SpecialityRepository.create(
@@ -41,4 +55,9 @@ async function deleteSpeciality(req, res) {
   SpecialityRepository.findAll().then((result) => res.json(result));
 }
 
-export default { findAll, addSpeciality, findSpeciality, updateSpeciality, deleteSpeciality };
+export default { findAll, 
+  addSpeciality, 
+  findBySpecialityId, 
+  findBySpecialityDescription,
+  updateSpeciality, 
+  deleteSpeciality };

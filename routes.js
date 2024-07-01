@@ -13,8 +13,9 @@ import document from "./src/controllers/documentController.js";
 import drug from "./src/controllers/drugController.js";
 import notification from "./src/controllers/notificationController.js";
 import speciality from "./src/controllers/specialityController.js";
+import doctorspeciality from "./src/controllers/doctorSpecialityController.js";
+import availability from "./src/controllers/availabilityController.js";
 import { upload }  from "./src/config/multerConfig.js";
-
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -23,28 +24,36 @@ const __dirname = dirname(__filename);
 
 const routes = express.Router();
 
-
 // Routes for role model
 routes.get("/role", role.findAll);
 routes.post("/role", role.addRole);
 routes.get("/role/:id", role.findRole);
+routes.get("/role/description/:description", role.findRoleByDescription);
 routes.put("/role/:id", role.updateRole);
 routes.delete("/role/:id", role.deleteRole);
+routes.get('/role/:description', role.findRoleByDescription);
 
 // Routes for user model
-
 // Rota para adicionar um novo usuário com upload de imagem
 routes.post('/user', upload.single('img'), user.addUser);
 // Rota para atualizar um usuário com upload de imagem
 routes.put('/user/:id', upload.single('img'), user.updateUser);
 
 routes.get("/user", user.findAll);
+routes.get("/userAllDoctors", user.findAllDoctors);
+routes.get("/userDoctorsByID/:id", user.findByDoctorsID);
+routes.get("/userAllPatients", user.findAllPatient);
+routes.get("/userAllPatients/:id", user.findAllPatient);
 routes.post("/user", user.addUser);
 routes.get("/user/:id", user.findUser);
 routes.put("/user/:id", user.updateUser);
+routes.put("/user/state/:userId", user.updateUserState);
 routes.delete("/user/:id", user.deleteUser);
 routes.post("/login", user.loginUser);
 routes.get('/user/:id/doctorinformation', user.findUserDoctorInformation); 
+routes.get('/user/:id/speciality', user.findUserSpeciality);
+routes.get('/user/firstName/:firstName',user.findUserIdByFirstName)
+routes.get('/user/firstNamePaient/:firstName',user.findUserPatientIdByFirstName)
 
 // Routes for userrole model
 routes.get("/userrole", userrole.findAll);
@@ -60,13 +69,28 @@ routes.get("/doctorinformation/:id", doctorInformation.findDoctorInformation);
 routes.put("/doctorinformation/:id", doctorInformation.updateDoctorInformation);
 routes.delete("/doctorinformation/:id", doctorInformation.deleteDoctorInformation);
 
-
 // Routes for speciality model
 routes.get("/speciality", speciality.findAll);
 routes.post("/speciality", speciality.addSpeciality);
-routes.get("/speciality/:id", speciality.findSpeciality);
+routes.get("/speciality/:id", speciality.findBySpecialityId);
+routes.get("/speciality/description/:description", speciality.findBySpecialityDescription);
 routes.put("/speciality/:id", speciality.updateSpeciality);
 routes.delete("/speciality/:id", speciality.deleteSpeciality);
+
+// Routes for DoctorSpeciality model
+routes.get("/doctorspeciality", doctorspeciality.findAll);
+routes.post("/doctorspeciality", doctorspeciality.addDoctorSpeciality);
+routes.get("/doctorspeciality/:id", doctorspeciality.findDoctorSpeciality);
+routes.put("/doctorspeciality/:id", doctorspeciality.updateDoctorSpeciality);
+routes.delete("/doctorspeciality/:id", doctorspeciality.deleteDoctorSpeciality);
+routes.delete("/doctorwithspecialityall", doctorspeciality.findAllDoctorsWithSpecialities);
+routes.get('/doctorspeciality/user/:userId', doctorspeciality.findDoctorSpecialitiesByUserId);
+
+//Doctor Availability
+routes.post('/availability', availability.createAvailability);
+routes.get('/availabilities', availability.listAvailabilities);
+routes.put("/availability/:id", availability.updateAvailability);
+routes.delete("/availability/:id", availability.deleteAvailability);
 
 // Routes for Appointment model
 routes.get("/appointment", appointment.findAll);
