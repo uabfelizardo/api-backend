@@ -1,3 +1,4 @@
+// specialityModel.js
 import { Sequelize, DataTypes } from 'sequelize';
 import db from "../db.js";
 

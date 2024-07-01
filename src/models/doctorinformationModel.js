@@ -4,7 +4,8 @@ import Speciality from "./specialityModel.js";
 
 const DoctorInformation = db.define("doctorInformation", {
   additionalInformation: {
-    type: DataTypes.STRING(255)
+    type: DataTypes.STRING(255),
+    allowNull: true
   },
   user_id: {
     type: DataTypes.INTEGER,

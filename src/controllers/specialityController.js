@@ -23,11 +23,13 @@ function findBySpecialityDescription(req, res) {
 
 
 async function addSpeciality(req, res) {
-      await SpecialityRepository.create(
-        {
-          description: req.body.description
-        }
-    );
+  try {
+    const newSpeciality = await SpecialityRepository.create(req.body);
+    res.status(201).json(newSpeciality);
+  } catch (error) {
+    console.error('Erro ao criar a especialidade:', error);
+    res.status(500).json({ error: 'Não foi possível criar a especialidade' });
+  }
 }
 
 async function updateSpeciality(req, res) {

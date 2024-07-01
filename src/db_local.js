@@ -57,4 +57,20 @@ sequelize.authenticate().then(() => {
 
 // Fazer o relacionamentos
 
+
+// Import models
+DoctorInformation.init(sequelize);
+DoctorSpecialties.init(sequelize);
+Speciality.init(sequelize);
+User.init(sequelize);
+
+// Call associate methods after all models are defined
+DoctorInformation.associate({ DoctorSpecialties, User });
+DoctorSpecialties.associate({ DoctorInformation, Speciality });
+Speciality.associate({ DoctorSpecialties });
+User.associate({ DoctorInformation });
+
+// Sync database (this should be in your app setup)
+sequelize.sync();
+
 export default sequelize; //exportar
