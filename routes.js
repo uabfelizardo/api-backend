@@ -32,11 +32,11 @@ import Speciality from './src/models/specialityModel.js';
 import User from "./src/models/userModel.js";
 
 // Associação de tabelas (para joins)
-DoctorInformation.associate({ DoctorSpecialties, User });
-DoctorSpecialties.associate({ DoctorInformation, Speciality });
-DoctorReviews.associate({ User, DoctorInformation })
-Speciality.associate({ DoctorSpecialties });
-User.associate({ DoctorInformation });
+// DoctorInformation.associate({ DoctorSpecialties, User });
+// DoctorSpecialties.associate({ DoctorInformation, Speciality });
+// DoctorReviews.associate({ User, DoctorInformation })
+// Speciality.associate({ DoctorSpecialties });
+// User.associate({ DoctorInformation });
 
 const routes = express.Router();
 
@@ -86,29 +86,6 @@ routes.put("/doctorinformation/:id", doctorInformation.updateDoctorInformation);
 routes.put("/doctorinformation/updateRating/:id/:rating", doctorInformation.updateDoctorInformation);
 routes.delete("/doctorinformation/:id", doctorInformation.deleteDoctorInformation);
 
-<<<<<<< HEAD
-=======
-// Routes for doctorSpecialty model
-routes.get("/doctorSpecialties", doctorSpecialties.findAll);
-routes.get("/doctorSpecialties/DoctorSpecialty/:user_id", doctorSpecialties.findDoctorSpecialty);
-routes.get("/doctorSpecialties/SpecialtyDoctors/:specialty_id", doctorSpecialties.findSpecialtyDoctors);
-routes.post("/doctorSpecialties/add", doctorSpecialties.addDoctorSpecialties);
-routes.delete("/doctorSpecialties/:user_id/:specialty_id", doctorSpecialties.deleteDoctorSpecialties);
-
-// Routes to get doctor information and specialty data
-routes.get("/doctors/all", doctorInformation.getFullDoctorInfo);
-routes.get("/doctors/ByDoctorId/:user_id", doctorInformation.getFullDoctorInfoByDoctorId);
-// routes.get("/doctors/BySpecialtyId/:specialty_id");
-// routes.get("/doctors/BySpecialtyDescription/:description");
-
-// Routes for doctor reviews
-routes.get("/reviews/all", doctorReviews.findAll);
-routes.get("/reviews/ByUser/:user_id", doctorReviews.findByUser);
-routes.get("/reviews/ByDoctor/:doctorInformation_id", doctorReviews.findByDoctor);
-routes.post("/reviews/add", doctorReviews.addDoctorReviews);
-routes.delete("/reviews/:id", doctorReviews.deleteDoctorReviews);
-
->>>>>>> 2d3543d1044c5eda7c70ce25e78dfb020f7df248
 // Routes for speciality model
 routes.get("/speciality", speciality.findAll);
 routes.post("/speciality", speciality.addSpeciality);

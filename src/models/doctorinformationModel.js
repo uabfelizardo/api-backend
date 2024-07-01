@@ -22,7 +22,7 @@ const DoctorInformation = db.define("doctorInformation", {
 });
 
 // Definindo a relação com Speciality
-DoctorInformation.belongsTo(Speciality, { foreignKey: 'speciality_id', as: 'speciality' });
+// DoctorInformation.belongsTo(Speciality, { foreignKey: 'speciality_id', as: 'speciality' });
 
 export default DoctorInformation;
 

@@ -55,8 +55,8 @@ const User = db.define("user", {
 });
 
 // Define associations
-User.associate = (models) => {
-  User.hasOne(models.DoctorInformation, { foreignKey: 'user_id', as: 'doctorInformation' });
-};
+// User.associate = (models) => {
+//   User.hasOne(models.DoctorInformation, { foreignKey: 'user_id', as: 'doctorInformation' });
+// };
 
 export default User;
